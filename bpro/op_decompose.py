@@ -6,11 +6,11 @@ def decompose_execute(shape, _parts):
 	parts = {}
 	for part in _parts:
 		parts[part.value] = part
-	
+	# calls decompose fct in shape.py which splits the 3D shape into different labelled surface based on the surface normal 
 	# components is a dictionary with a comp-selector as the key and a list of 2D-shapes as the related value 
 	components = shape.decompose(parts)
 	if len(components)>0:
-		# now apply the rule for each decomposed 2D-shape
+		# now apply the rule for each decomposed 2D-shape (i think it executes each rule specified in each part ==> go on with the other rules in the rulefile hierarchically)
 		for selector in components:
 			for _shape in components[selector]:
 				context.pushState(shape=_shape)

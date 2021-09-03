@@ -23,8 +23,14 @@ from .op_inset import Inset
 from .op_inset2 import Inset2
 from .op_rectangle import Rectangle
 from .op_hip_roof import HipRoof
+from .op_complex_hip_roof import ComplexHipRoof
+from .op_dutch_roof import DutchRoof
+from .op_gable_roof import GableRoof
+from .op_hip_roof2 import HipRoof2
 from .op_copy import Copy
 from .op_translate import Translate
+
+
 
 from pro.base import Param
 
@@ -48,6 +54,10 @@ def buildFactory():
     factory["Inset2"] = Inset2
     factory["Rectangle"] = Rectangle
     factory["HipRoof"] = HipRoof
+    factory["ComplexHipRoof"]= ComplexHipRoof
+    factory["DutchRoof"]= DutchRoof
+    factory["GableRoof"]= GableRoof
+    factory["HipRoof2"]= HipRoof2
     factory["Copy"] = Copy
     factory["Translate"] = Translate
 
@@ -113,9 +123,10 @@ def apply(ruleFile, startRule="Begin"):
 
         def removeChildOperators(self, numParts): pass
     context.operator = dummy()
-    # evaluate the rule set
+    # evaluate the rule set: this command actually read and parse the rule set --> create 3D buildings according to rules 
+  
+    #execute first rule (that calls the other rules). For instance for test.py startrule Begin is called and run the whole rulefile 
     getattr(module, startRule)().execute()
-
     # remove unused faces from context.facesForRemoval
     bmesh.ops.delete(bm, geom=context.facesForRemoval, context='FACES')
     # there still may be some doubles, inspite of the use of util.VertexMaterial
@@ -129,6 +140,14 @@ def apply(ruleFile, startRule="Begin"):
 
     # write everything back to the mesh
     bm.to_mesh(mesh)
+    
+    # for each param we create a custom property to store the parameter value for the active object (building)
+    # Now you can retrieve any parameter, i.e. bpy.data.objects['BCGA']['height'] gives the building height
+    for param in params:
+        param_name=param[0]
+        param_value=param[1]
+        obj[param_name]= param_value.getValue()
+       
     # cleaning context from blender specific members
     context.removeAttributes()
 

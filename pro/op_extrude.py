@@ -5,8 +5,8 @@ def extrude(depth, *parts, **kwargs):
 	Extrudes a 2D-shape in the direction of the normal to the shape
 	
 	Args:
-		depth (float): Amount of extrusion
-		*parts: Definitions of decomposition parts
+		depth (float): Amount of extrusion (== height)
+		*parts: Definitions of decomposition parts (side, top, bottom,...)
 	
 	Kwargs:
 		inheritMaterialAll (bool): All created faces inherit material of the original 2D shape.

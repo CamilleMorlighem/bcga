@@ -9,6 +9,7 @@ class Split(pro.op_split.Split):
 		parts = self.parts if self.reverse==False else reversed(self.parts)
 		# Calculate cuts.
 		# cuts is a list of tuples (cutShape, ruleForTheCutShape)
+		# calls the split fct in shape.py
 		cuts = shape.split(self.direction, parts)
 		
 		if len(cuts)==1:

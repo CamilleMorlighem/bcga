@@ -13,7 +13,7 @@ class Modifier:
 	"""
 	def __init__(self, **kwargs):
 		for k in kwargs:
-			# there is only one kwarg!
+			#there is only one kwarg!
 			self.modifier = k
 			setattr(self, k, True)
 			self.value = kwargs[k]
@@ -297,6 +297,8 @@ class ParamFloat(Param):
 			self.value = self.random.getValue()
 	
 	def __float__(self):
+		if self.random:
+			self.value = self.random.getValue()
 		return float(self.value)
 	
 	def __add__(self, other):

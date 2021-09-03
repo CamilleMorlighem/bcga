@@ -12,7 +12,7 @@ class MaterialManager:
         self.engines = {
             "BLENDER_RENDER": BlenderRender(),
             "CYCLES": CyclesRender(),
-            "EEVEE": CyclesRender()
+            "BLENDER_EEVEE": CyclesRender()
         }
 
     def getMaterial(self, name):
@@ -62,8 +62,11 @@ class MaterialManager:
         Creates a new material and calls self.setMaterial(...)
         """
         engine = context.blenderContext.scene.render.engine
+        
         try:
-            material = self.engines[engine].createMaterial(name, textures)
+            engine="BLENDER_EE"
+            #material = self.engines[engine].createMaterial(name, textures)
+            material = CyclesRender().createMaterial(name, textures)
         except RuntimeError:
             material = None
         else:
